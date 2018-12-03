@@ -1,0 +1,290 @@
+mysql> use fms;
+Database changed
+mysql> CREATE TABLE COURSE_MASTER(
+    ->        Course_ID int(5) NOT NULL AUTO_INCREMENT,
+    ->       Course_Name varchar(50) NOT NULL,
+    ->        No_of_Days varchar(5) NOT NULL,
+    ->       PRIMARY KEY (Course_ID));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO COURSE_MASTER(Course_Name,No_of_Days)
+    ->         VALUES('Java',15),
+    ->      ('C++',20),
+    ->      ('Embedded',30),
+    ->     ('Android',15),
+    ->     ('Spring',22);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> Create table EMPLOYEE_MASTER(
+    ->         Employee_ID int(5) PRIMARY KEY AUTO_INCREMENT,
+    ->          EmployeeName varchar(50) NOT NULL,
+    ->         Password varchar(20) UNIQUE,
+    ->          Role varchar(20) NOT NULL);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53002,'Ankit','Coordin@6','Co-ordinator');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql>  INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53003,'Anjali','Anjali@6','Co-ordinator');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql>   INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53004,'Rekha','Rekha@16','Faculty');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql>  INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53005,'Raj','Raj@16','Faculty');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql>   INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53006,'Rahul','Rahul@16','Faculty');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql>  INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53007,'Raman','Raman@16','Faculty');
+Query OK, 1 row affected (0.19 sec)
+
+mysql>
+mysql>
+mysql>   INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53008,'mary','Mary@24','Participant');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql>  INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53009,'Antony','Antony@24','Participant');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql>  INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53010,'Anjum','Anjum@24','Participant');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>  INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53011,'Ayushman','Ayushman@24','Participant');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> CREATE TABLE TRAINING_PROGRAM (Training_Code int(10) AUTO_INCREMENT PRIMARY KEY,
+    ->          Course_code int(5),
+    ->          Faculty_Code int(5),
+    ->           Start_Date DATE,
+    ->           End_Date DATE,
+    ->           FOREIGN KEY(Course_code) REFERENCES COURSE_MASTER(Course_ID),
+    ->          FOREIGN KEY(Faculty_Code) REFERENCES EMPLOYEE_MASTER(Employee_ID));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO TRAINING_PROGRAM(Course_Code,Faculty_Code,Start_Date,End_Date)
+    ->       VALUES(1,53004,'2018-12-03','2018-12-18'),
+    ->       (2,53005,'2018-12-01','2018-12-20'),
+    ->      (3,53006,'2018-12-01','2018-12-30'),
+    ->      (4,53007,'2018-12-01','2018-12-16');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE FACULTY_SKILL(
+    ->        Faculty_Id int NOT NULL,
+    ->        Skill_Set varchar(200) NOT NULL,
+    ->       FOREIGN KEY(Faculty_Id) REFERENCES EMPLOYEE_MASTER(Employee_ID));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO  FACULTY_SKILL VALUES(53004,'java'),
+    ->      (53005,'C++'),
+    ->      (53006,'Embedded'),
+    ->      (53007,'Android');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE FEEDBACK_MASTER(
+    ->       Training_Code int(5) ,
+    ->        Participant_Id int(5),
+    ->        FB_Prs_comm int(1),
+    ->        FB_Clrfy_dbts int(1),
+    ->        FB_TM int(1),
+    ->        FB_Hnd_out int(1),
+    ->        FB_Hw_Sw_Ntwrk int(1),
+    ->        Comments varchar(200),
+    ->        Suggestions varchar(200),
+    ->        FOREIGN KEY(Training_Code) REFERENCES TRAINING_PROGRAM(Training_Code),
+    ->        FOREIGN KEY(Participant_Id) REFERENCES EMPLOYEE_MASTER(Employee_ID));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into feedback_master values (1,53008,3,2,1,3,3,'no comments','no suggestions'),
+    ->     (2,53009,3,3,1,4,3,'no comments','no suggestions'),
+    ->      (3,53010,3,2,1,3,3,'no comments','no suggestions'),
+    ->      (4,53011,2,2,1,3,3,'no comments','no suggestions');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> CREATE TABLE TRAINING_PARTICIPANT_ENROLLMENT(
+    ->       Training_Code int(5),
+    ->      Participant_Id int(5),
+    ->      FOREIGN KEY(Training_Code) REFERENCES TRAINING_PROGRAM(Training_Code),
+    ->       FOREIGN KEY(Participant_Id) REFERENCES EMPLOYEE_MASTER(Employee_ID));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>  INSERT INTO TRAINING_PARTICIPANT_ENROLLMENT(Training_Code,Participant_Id)
+    ->       VALUES(1,53008),
+    ->      (2,53009),
+    ->     (3,53010),
+    ->     (4,53011);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from Course_master;
++-----------+-------------+------------+
+| Course_ID | Course_Name | No_of_Days |
++-----------+-------------+------------+
+|         1 | Java        | 15         |
+|         2 | C++         | 20         |
+|         3 | Embedded    | 30         |
+|         4 | Android     | 15         |
+|         5 | Spring      | 22         |
++-----------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee_master;
++-------------+--------------+-------------+--------------+
+| Employee_ID | EmployeeName | Password    | Role         |
++-------------+--------------+-------------+--------------+
+|       53002 | Ankit        | Coordin@6   | Co-ordinator |
+|       53003 | Anjali       | Anjali@6    | Co-ordinator |
+|       53004 | Rekha        | Rekha@16    | Faculty      |
+|       53005 | Raj          | Raj@16      | Faculty      |
+|       53006 | Rahul        | Rahul@16    | Faculty      |
+|       53007 | Raman        | Raman@16    | Faculty      |
+|       53008 | mary         | Mary@24     | Participant  |
+|       53009 | Antony       | Antony@24   | Participant  |
+|       53010 | Anjum        | Anjum@24    | Participant  |
+|       53011 | Ayushman     | Ayushman@24 | Participant  |
++-------------+--------------+-------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from training_program;
++---------------+-------------+--------------+------------+------------+
+| Training_Code | Course_code | Faculty_Code | Start_Date | End_Date   |
++---------------+-------------+--------------+------------+------------+
+|             1 |           1 |        53004 | 2018-12-03 | 2018-12-18 |
+|             2 |           2 |        53005 | 2018-12-01 | 2018-12-20 |
+|             3 |           3 |        53006 | 2018-12-01 | 2018-12-30 |
+|             4 |           4 |        53007 | 2018-12-01 | 2018-12-16 |
++---------------+-------------+--------------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from training_participant_enrollment;;
++---------------+----------------+
+| Training_Code | Participant_Id |
++---------------+----------------+
+|             1 |          53008 |
+|             2 |          53009 |
+|             3 |          53010 |
+|             4 |          53011 |
++---------------+----------------+
+4 rows in set (0.00 sec)
+
+ERROR:
+No query specified
+
+mysql> select * from feedback_master;
++---------------+----------------+-------------+---------------+-------+------------+----------------+-------------+----------------+
+| Training_Code | Participant_Id | FB_Prs_comm | FB_Clrfy_dbts | FB_TM | FB_Hnd_out | FB_Hw_Sw_Ntwrk | Comments    | Suggestions    |
++---------------+----------------+-------------+---------------+-------+------------+----------------+-------------+----------------+
+|             1 |          53008 |           3 |             2 |     1 |          3 |              3 | no comments | no suggestions |
+|             2 |          53009 |           3 |             3 |     1 |          4 |              3 | no comments | no suggestions |
+|             3 |          53010 |           3 |             2 |     1 |          3 |              3 | no comments | no suggestions |
+|             4 |          53011 |           2 |             2 |     1 |          3 |              3 | no comments | no suggestions |
++---------------+----------------+-------------+---------------+-------+------------+----------------+-------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from faculty_skills;;
+ERROR 1146 (42S02): Table 'fms.faculty_skills' doesn't exist
+ERROR:
+No query specified
+
+mysql> select * from faculty_skill;
++------------+-----------+
+| Faculty_Id | Skill_Set |
++------------+-----------+
+|      53004 | java      |
+|      53005 | C++       |
+|      53006 | Embedded  |
+|      53007 | Android   |
++------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from feedback_master;
++---------------+----------------+-------------+---------------+-------+------------+----------------+-------------+----------------+
+| Training_Code | Participant_Id | FB_Prs_comm | FB_Clrfy_dbts | FB_TM | FB_Hnd_out | FB_Hw_Sw_Ntwrk | Comments    | Suggestions    |
++---------------+----------------+-------------+---------------+-------+------------+----------------+-------------+----------------+
+|             1 |          53008 |           3 |             2 |     1 |          3 |              3 | no comments | no suggestions |
+|             2 |          53009 |           3 |             3 |     1 |          4 |              3 | no comments | no suggestions |
+|             3 |          53010 |           3 |             2 |     1 |          3 |              3 | no comments | no suggestions |
+|             4 |          53011 |           2 |             2 |     1 |          3 |              3 | no comments | no suggestions |
+|             1 |          53008 |           5 |             5 |     5 |          5 |              5 |             | 5              |
+|             2 |          53008 |           5 |             6 |     5 |          5 |              5 |             | No             |
++---------------+----------------+-------------+---------------+-------+------------+----------------+-------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53001,'Pratencha','Admin@12','Admin');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  INSERT INTO EMPLOYEE_MASTER(Employee_ID,EmployeeName,Password,Role) VALUES(53002,'Ankit','Coordin@6','Co-ordinator');
+ERROR 1062 (23000): Duplicate entry '53002' for key 'PRIMARY'
+mysql> update employee_master set role='coordinator' where employee_id=53002;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_master set role='coordinator' where employee_id=53003;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_master;
++-------------+--------------+-------------+-------------+
+| Employee_ID | EmployeeName | Password    | Role        |
++-------------+--------------+-------------+-------------+
+|       53001 | Pratencha    | Admin@12    | Admin       |
+|       53002 | Ankit        | Coordin@6   | coordinator |
+|       53003 | Anjali       | Anjali@6    | coordinator |
+|       53004 | Rekha        | Rekha@16    | Faculty     |
+|       53005 | Raj          | Raj@16      | Faculty     |
+|       53006 | Rahul        | Rahul@16    | Faculty     |
+|       53007 | Raman        | Raman@16    | Faculty     |
+|       53008 | mary         | Mary@24     | Participant |
+|       53009 | Antony       | Antony@24   | Participant |
+|       53010 | Anjum        | Anjum@24    | Participant |
+|       53011 | Ayushman     | Ayushman@24 | Participant |
++-------------+--------------+-------------+-------------+
+11 rows in set (0.00 sec)
+
+mysql> desc training_program;
++---------------+---------+------+-----+---------+----------------+
+| Field         | Type    | Null | Key | Default | Extra          |
++---------------+---------+------+-----+---------+----------------+
+| Training_Code | int(10) | NO   | PRI | NULL    | auto_increment |
+| Course_code   | int(5)  | YES  | MUL | NULL    |                |
+| Faculty_Code  | int(5)  | YES  | MUL | NULL    |                |
+| Start_Date    | date    | YES  |     | NULL    |                |
+| End_Date      | date    | YES  |     | NULL    |                |
++---------------+---------+------+-----+---------+----------------+
+5 rows in set (0.03 sec)
+
+mysql> select * from Course_master;
++-----------+-------------+------------+
+| Course_ID | Course_Name | No_of_Days |
++-----------+-------------+------------+
+|         1 | Java        | 15         |
+|         2 | C++         | 20         |
+|         3 | Embedded    | 30         |
+|         4 | Android     | 15         |
+|         5 | JAckDB      | 30         |
++-----------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql>
